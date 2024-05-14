@@ -13,11 +13,12 @@ namespace ServerSim.utils
     public class DBConn
     {
         private static readonly IDatabase db = ConnectionMultiplexer.Connect("localhost").GetDatabase();
+        private static readonly object _lockObject = new object();
 
 
         public static bool SetData(string key, string value)
         {
-            lock (db) {
+            lock (_lockObject) {
                 return db.StringSet(key, value);
             }
         }

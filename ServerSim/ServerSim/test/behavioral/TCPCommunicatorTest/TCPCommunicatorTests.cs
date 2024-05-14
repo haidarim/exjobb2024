@@ -45,7 +45,7 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
         /// Tests the behavior of TCPCommunicator's constructor when passing null, empty, blank IP address, or invalid port (0>port>65535).
         /// Expected behavior: Constructor should throw an exception when null, empty, or blank IP address is passed.
         /// </summary>
-        private static void ConstructorBehaviorTest()
+        public  static void ConstructorBehaviorTest()
         {
             bool NullCatched = false, EmptyCatched = false, BlankCatched = false;
             bool NegativePortCatched = false, InvalidPortCatched = false; 
@@ -80,7 +80,7 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
 
             //Server shoulf start after calling start and service must be available
             tcpCommunicator.Start();
-            while (!tcpCommunicator.IsRunning()) { }
+
             ClassicAssert.IsTrue(tcpCommunicator.IsRunning());
 
             client.Connect(TestIp, 22222);
@@ -102,12 +102,11 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
             tcpCommunicator.Start();
             TcpClient client = new TcpClient();
             client.Connect(TestIp, 44444);
-            while (!tcpCommunicator.IsRunning()) { }
+
             ClassicAssert.IsTrue(tcpCommunicator.IsRunning());
             ClassicAssert.IsTrue(client.Client.Connected);
             tcpCommunicator.Stop();
-            //client.Close();
-
+           
             ClassicAssert.IsFalse(tcpCommunicator.IsRunning());
         }
 
@@ -118,7 +117,7 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
         {
             TCPCommunicator tcpCommunicator = new TCPCommunicator(TestIp, 55555);
             tcpCommunicator.Start();
-            while (!tcpCommunicator.IsRunning()) { }
+            
             tcpCommunicator.Stop();
             ClassicAssert.IsFalse(tcpCommunicator.IsRunning());
         }
@@ -134,7 +133,7 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
         {
             TCPCommunicator tcpCommunicator = new TCPCommunicator(TestIp,8000);
             tcpCommunicator.Start();
-            while (!tcpCommunicator.IsRunning()) { }
+           
             int Id = 25, Pressure = 90;
             
             TcpClient client = new TcpClient();
@@ -154,6 +153,8 @@ namespace ServerSim.test.behavioral.TCPCommunicatorTests
                 var response = reader.ReadLine();
                 string PostResponse = response != null ? response.ToString() : "null";
                 ClassicAssert.AreEqual(PostResponse, "{\"reqId\": \"setPressure\", \"body\": {\"status-code\": \"201 complete\"}}");
+
+                Console.WriteLine("here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1"); ;
 
                 // try to send GET-request and also test the result of previous post request............................................................
                 string GetRequest = "\"auth-key\": \"secKey123#\", \"method\": \"GET\", \"reqId\": \"getPressure\", \"body\": {\"tankId\":" + Id + "}";

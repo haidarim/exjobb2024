@@ -8,6 +8,9 @@ using ServerSim.utils;
 
 namespace ServerSim.communication
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class PipeCommunicator:ICommunicator
     {
         private volatile bool isRunning = false; 
@@ -15,16 +18,28 @@ namespace ServerSim.communication
 
         public PipeCommunicator() { }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool IsRunning()
         {
             return isRunning;
         }
 
+
+        /// <summary>
+        /// Stop the PipeServer
+        /// </summary>
         public void Stop()
         {
             isRunning = false;
         }
 
+        /// <summary>
+        /// Starts the PipeServer in a separate thread and give the control back to the caller. 
+        /// </summary>
+        /// <exception cref="Exception">calling this method when Pipe-server is already started</exception>
         public void Start()
         {
             if (isRunning)
@@ -35,6 +50,10 @@ namespace ServerSim.communication
             new Thread(() => Run()).Start();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
         private void Run()
         {
             while (isRunning)
@@ -44,7 +63,7 @@ namespace ServerSim.communication
                     using (NamedPipeServerStream readServer = new NamedPipeServerStream("readPipe"))
                     using (NamedPipeServerStream writeServer = new NamedPipeServerStream("writePipe"))
                     {
-                        Console.WriteLine("PipeServer: waiting to connection!");
+                        Console.WriteLine("PipeServer: Väntar på anslutning ...");
                         readServer.WaitForConnection();
                         //wait
                         Console.WriteLine("client connected!");

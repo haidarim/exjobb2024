@@ -10,6 +10,9 @@ using ServerSim.communication;
 
 namespace ServerSim.utils
 {
+    /// <summary>
+    /// ---------------------------------------------------------
+    /// </summary>
     public class TCPCommunicator:ICommunicator
     {
 
@@ -18,14 +21,21 @@ namespace ServerSim.utils
         /// </summary>
 
         #region privateVar
-        private RequestHandler RQHandler = new RequestHandler(); 
+         
         private volatile bool Running = false;
         private string Ip;
         private int Port;
-        private List<TcpClient> Clients; 
+        private static List<TcpClientHandler> Clients; 
         #endregion
 
 
+
+        /// <summary>
+        /// ..................................................
+        /// </summary>
+        /// <param name="Ip"></param>
+        /// <param name="Port"></param>
+        /// <exception cref="ArgumentException"></exception>
         public TCPCommunicator(string Ip, int Port)
         {
             if(string.IsNullOrEmpty(Ip) || string.IsNullOrWhiteSpace(Ip))
@@ -38,18 +48,29 @@ namespace ServerSim.utils
             }
             this.Ip = Ip;
             this.Port = Port;
-            Clients = new List<TcpClient>();
+            Clients = new List<TcpClientHandler>();
         }
 
+
+        /// <summary>
+        /// This method will start server-service and does not release the current thread until the server is started
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         public void Start()
         {
             if (Running)
             {
                 throw new Exception("servre already running");
             }
-            new Thread(()=>Run()).Start();            
+            new Thread(()=>Run()).Start();
+            while (!Running) { continue; }
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <exception cref="Exception"></exception>
         private void Run()
         {
             try
@@ -64,14 +85,14 @@ namespace ServerSim.utils
 
                     while (this.Running)
                     {
-                        // accept connections 
-                        TcpClient client = server.AcceptTcpClient();
-
-                        Clients.Add(client);
+                        // accept connection and pass to TcpClientHandler   
+                        TcpClientHandler clientHandler = new TcpClientHandler(server.AcceptTcpClient());
+                        Clients.Add(clientHandler);
+                        
                         Console.WriteLine("Ansluten!");
 
                         // new connection has its own thread 
-                        Thread ClientThread = new Thread(() => RunClientHandler(client));
+                        Thread ClientThread = new Thread(() => clientHandler.Start());
                         ClientThread.Start();
                     }
                 }
@@ -79,46 +100,66 @@ namespace ServerSim.utils
             catch (Exception e)
             {
                 Console.WriteLine($"failure in server-setup: {e.Message}");
+                this.Running = false; 
                 throw new Exception("server failed!");
             }
         }
 
+
+
+        /// <summary>
+        /// 
+        /// </summary>
         public void Stop()
         {
             this.Running = false;
-            foreach (TcpClient Client in Clients)
-            {
-                if (Client != null)
-                {
-                    if (Client.Client != null && Client.Client.Connected)
-                    {
-                        Client.Client.Shutdown(SocketShutdown.Both);
-                    }
-                    Client.Close();
-                }
-            }
-
             Clients.Clear();
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public bool IsRunning()
         {
             return this.Running;
         }
 
- 
 
-        public void RemoveClient(TcpClient Client)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="message"></param>
+        public static void broadCast(string message)
+        {
+            Clients.ForEach(client => { client.SendMessage(message); });
+        }
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="Client"></param>
+        /// <exception cref="Exception"></exception>
+        /*public static void RemoveClient(TcpClient Client)
         {
             if (Clients.Contains(Client) && !Clients.Remove(Client))
             {
-                throw new Exception($"ContractFailedEventArgs to remove the client");
+                throw new Exception($"Failed to remove the client");
             }
             Client.Close();
+        }*/
+
+        public static void RemoveClient(TcpClientHandler clientHandler)
+        {
+            Clients.Remove(clientHandler);
         }
 
- 
 
+
+        /*
+        ///
         private void RunClientHandler(TcpClient client)
         {
             /*
@@ -147,7 +188,8 @@ namespace ServerSim.utils
             catch(Exception e) 
             {
                 Console.WriteLine($"failure when running client handler RunClientHandler(...): {e.Message}");
-            }*/
+            }
+        ---
             try
             {
 
@@ -184,7 +226,7 @@ namespace ServerSim.utils
             {
                 Console.WriteLine("closed the client.Socket!");
             }
-        }
+        }*/
 
         
         

@@ -29,10 +29,14 @@ namespace ServerSim
         {
             KeyValueStringTests.RunKeyValueStringTests();
             TCPCommunicatorTests.RunTCPCommunicatorTests();
-            PipeCommunicatorTests.RunPipeCommunicatorTests();
-            //DBConnTest.RunDBConnTests();
+            PipeCommunicatorTests.RunPipeCommunicatorTests(); // <---------------------
+            //DBConnTest.RunDBConnTests(); // <----------------------------
             RequestHandlerTests.RunRequestHandlerTests();//    <------------------------
-            Console.WriteLine("All Tests Passed!");
+            Console.WriteLine("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+            Console.WriteLine("*******************************************************************************************");
+            Console.WriteLine("************************************ All TESTS PASSED! ************************************");
+            Console.WriteLine("*******************************************************************************************");
+            Console.WriteLine("\n");
             // TODO: other tests here
         }
     }

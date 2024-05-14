@@ -8,7 +8,9 @@ namespace ServerSim.utils
 {
 
     //<summary>
-    //  this class is responsible to handle requests and response correctly to each request. 
+    // This class is responsible to handle requests and response correctly to each request. 
+    // NOTE: each request should have an unique reqId, since the data structor used is a HashTable
+    // therefor function must be grouped under an unique tag
     //</summary>
     public class RequestHandler
     {
@@ -18,6 +20,7 @@ namespace ServerSim.utils
         // post request handler map, each func in this map takes a string as @param and returns a bool as result  
         private Dictionary<string, Func<string,bool>> postRequestsHandlers;
         public  readonly string auth_key = "secKey123#";
+        private readonly object _lockObject = new object();
 
         public RequestHandler()
         {
@@ -66,14 +69,19 @@ namespace ServerSim.utils
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         public string HandleRequest(string request)
         {
-            lock (this)
+            lock (_lockObject)
             {
                 string mehtod = KeyValueString.GetValue(request, "method");
                 string reqId = KeyValueString.GetValue(request, "reqId");
                 string requestBody = KeyValueString.GetValue(request, "body");
-                string responseBody = "404 bad request!";
+                string responseBody = "\"status-code\": \"404 bad request\"";
 
                 if (KeyValueString.GetValue(request, "auth-key").Equals(auth_key))
                 {
@@ -91,6 +99,12 @@ namespace ServerSim.utils
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reqId"></param>
+        /// <param name="requestBody"></param>
+        /// <returns></returns>
         private string HandleGetRequest(string reqId, string requestBody)
         {
             if (getRequestsHandlers.ContainsKey(reqId))
@@ -103,7 +117,12 @@ namespace ServerSim.utils
         }
 
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="reqId"></param>
+        /// <param name="requestBody"></param>
+        /// <returns></returns>
         private string HandlePostRequest(string reqId, string requestBody)
         {
             if (postRequestsHandlers.ContainsKey(reqId) && postRequestsHandlers[reqId](requestBody))
