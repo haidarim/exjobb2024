@@ -241,6 +241,16 @@ public class TCPCommunicatorBehaviorTests {
         }
     }
 
+    // Test the starting, sending and restarting sequential to check the correctness of the class's behavior
+    // the test are done by single thread and sequential because sequential initialization start(), send, and restarting goes faster since threading takes a bit time to get resources
+    // Expected behavior: each request should result a valid response.
+    // test's precondition:
+    @Test
+    void startSendAndTearDownSequentialTest(){
+
+    }
+
+
     @AfterEach
     void tearDown(){
         tcpCommunicator.tearDown();
