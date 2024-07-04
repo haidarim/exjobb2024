@@ -1,0 +1,17 @@
+Jul 03, 2024 8:14:39 PM ZipperTest
+INFO: [main] compressed data from: 5191123 to: 25727
+Jul 03, 2024 8:14:39 PM ZipperTest
+INFO: [main] compressed data from: 10463432 to: 51286
+Jul 03, 2024 8:14:40 PM ZipperTest
+INFO: [main] compressed data from: 52317160 to: 254199
+Jul 03, 2024 8:14:41 PM ZipperTest
+INFO: [main] compressed data from: 104634320 to: 507837
+Jul 03, 2024 8:14:41 PM java.lang.Shutdown logRuntimeExit
+FINE: Runtime.exit() called with status: 0
+java.lang.Throwable: Runtime.exit(0)
+	at java.base/java.lang.Shutdown.logRuntimeExit(Shutdown.java:179)
+	at java.base/java.lang.Shutdown.exit(Shutdown.java:160)
+	at java.base/java.lang.Runtime.exit(Runtime.java:188)
+	at java.base/java.lang.System.exit(System.java:1925)
+	at com.intellij.rt.junit.JUnitStarter.main(JUnitStarter.java:56)
+
