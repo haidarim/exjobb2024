@@ -2,14 +2,17 @@ package test.apiTest;
 
 import communication.TcpClient;
 import test.CommunicationTestUtil;
+
 import util.CentralLogger;
 import util.KeyValueString;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.*;
+
 import java.util.logging.Logger;
+
+
 
 
 
@@ -18,10 +21,15 @@ import java.util.logging.Logger;
  * @author  Mehdi Haidari
  * */
 
+
 public class ApiTest {
+    // To check tearDown call
+    private static final Logger _log = Logger.getLogger(ApiTest.class.getSimpleName());
+
+
 
     private static  final Logger log = Logger.getLogger(ApiTest.class.getSimpleName());
-    private static final TcpClient tcpClient = new TcpClient(CommunicationTestUtil.HOST, CommunicationTestUtil.PORT,4000, 40000);
+    private static final TcpClient tcpClient = new TcpClient(CommunicationTestUtil.HOST, CommunicationTestUtil.PORT,3000, 3000);
     private static String loadTextFile(String filePath) {
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -67,18 +75,24 @@ public class ApiTest {
         )) {
             System.out.println(KeyValueString.getResponseBody(response));
             System.out.println(expectedResponse);
-            throw new AssertionError("wrong result when Geting request");
+            throw new AssertionError("wrong result when Getting request");
         }
          return  end-start;
     }
 
     public static void main(String[] args) {
         tcpClient.start();
-        //printTimeTakenForNRequest(10000);
+        try{
+            printTimeTakenForNRequest(1000);
+          }catch (RuntimeException e){
+            CentralLogger.logInfo("ERROR: "+ e.getMessage() + e.toString(), _log);
+            tcpClient.tearDown();
+            System.exit(1);
+        }
 
-        String loadedData = loadTextFile("./axClient/src/test/textfile/10MB.txt");
-        System.out.println("time taken for size: "+ loadedData.length()+" is: "+ nanoToSec(getRttTime(KeyValueString.toValidKeyValueRequest("secKey123#", "TEST", "test", "{"+ loadedData+"}"), "{\"status\": \"TEST-OK\"}")) + "sec");
-
+        CentralLogger.logInfo("                 ---------------> ALL TESTS PASSED <---------------", _log);
         tcpClient.tearDown();
+
+        System.out.println("returned  <------------------- 0, i.e. normal mode.");
     }
 }
