@@ -58,3 +58,8 @@ obj
 bin
 dump.rdb
 
+
+*.class
+clientProj.jar
+
+
