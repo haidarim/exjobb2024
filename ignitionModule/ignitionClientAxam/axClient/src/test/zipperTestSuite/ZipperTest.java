@@ -34,7 +34,7 @@ public class ZipperTest {
         assertEquals(_10MB, compressAndDecompress(_10MB));
 
         String _50MB = readFile("./src/test/textfile/50MB.txt");
-        assertEquals(_50MB, compressAndDecompress(_50MB));
+        assertEquals(_50MB, "heje");
 
         String _100MB = readFile("./src/test/textfile/100MB.txt");
         assertEquals(_100MB, compressAndDecompress(_100MB));
