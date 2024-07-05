@@ -1,9 +1,11 @@
 package communication;
 
+import util.CentralLogger;
 import util.Zipper;
 
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
 
 /**
  * This class is a TCP client service provider. It performs a persistence communication through the TCP socket. Using this class String messages as requests and responses
@@ -29,6 +31,7 @@ public class TcpClient {
 
     private int connectionTimeout; // connection timeout value
     private int readTimeout; // reading timeout
+
 
 
     /**
@@ -58,7 +61,14 @@ public class TcpClient {
             if (isRunning()) { // check if the server is already in use
                 throw new RuntimeException("TcpClient already running!");
             }
-            this.axService = new Thread(this::run);
+
+            this.axService = new Thread(()->{
+                try{
+                    run();
+                }catch (InterruptedException e){
+                    throw new RuntimeException(e.getMessage());
+                }
+            });
             axService.start();
             while (!isRunning()) { // sleep until the server starts
                 try {
@@ -71,7 +81,7 @@ public class TcpClient {
     }
 
     // Run and initialize the socket, output and input, and keep the connection alive until terminating by user
-    private void run() {
+    private void run() throws InterruptedException {
         try (Socket s = new Socket()) {
             this.axSocket = s;
             this.axSocket.connect(new InetSocketAddress(host, port), connectionTimeout); // wait, or exception if timeout
@@ -94,7 +104,10 @@ public class TcpClient {
                 }
             }
         } catch (IOException | InterruptedException e) {
-            return;
+            synchronized (lock) {
+                running = true;
+                lock.notifyAll(); // notify for and wake up the thread in start()
+            }
         }
     }
 
@@ -105,7 +118,14 @@ public class TcpClient {
      */
     public synchronized void tearDown() {
         synchronized (lock) {
-            this.running = false;
+            lock.notifyAll(); // Notify waiting thread to wake up
+            if(!this.running){
+                synchronized (lock) {
+                    running = true;
+                    lock.notifyAll(); // notify for and wake up the thread in start()
+                }
+            }
+
             if(this.axSocket != null){
                 try{
                     this.axSocket.close(); // close the resource to force worker-thread interrupt
@@ -116,7 +136,8 @@ public class TcpClient {
             if(this.axService != null){
                 axService.interrupt(); // send kill signal
             }
-            lock.notifyAll(); // Notify waiting thread to wake up
+
+            this.running = false;
         }
     }
 
