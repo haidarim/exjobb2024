@@ -13,14 +13,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class getValueTests {
 
     @Test
-    // (null, "key")
-    // ("string", null)
-    // ("", "key")
-    // ("string", "    ")
-    // ("string", "key")
-    // ("key","key")
-    // ("#key", "key")
-    void getValueExceptionTest(){
+        // (null, "key")
+        // ("string", null)
+        // ("", "key")
+        // ("string", "    ")
+        // ("string", "key")
+        // ("key","key")
+        // ("#key", "key")
+    public void getValueExceptionTest(){
         // first if statement
         assertThrows(IllegalArgumentException.class, ()->KeyValueString.getValue(null, "key"));
         assertThrows(IllegalArgumentException.class, ()->KeyValueString.getValue("json", null));
@@ -98,7 +98,7 @@ public class getValueTests {
     @Test
         // "key":   "value"
         // "key"            :     "value"
-    void getValueKeyStringValueTest1(){
+    public void getValueKeyStringValueTest1(){
         String keyValueString = "\"reqId\":          \"getUsedSpace\"";
         assert(KeyValueString.getValue(keyValueString, "reqId").equals("getUsedSpace"));
 
@@ -108,7 +108,7 @@ public class getValueTests {
 
     @Test
         // "key"            :     "          value                "
-    void getValueKeyStringValueTest2(){
+    public void getValueKeyStringValueTest2(){
         String keyValueString = "\"reqId\"         :          \"           CPU-temp          \"";
         assert(KeyValueString.getValue(keyValueString, "reqId").equals("CPU-temp"));
     }
@@ -116,27 +116,27 @@ public class getValueTests {
 
     @Test
         // "user"   :   {"name": "u1!, "age": 9990}
-    void getValueObjectTest1(){
+    public void getValueObjectTest1(){
         String keyValueString = "\"user\"   :   {\"name\": \"u1!\", \"age\": 9990}";
         assert (KeyValueString.getValue(keyValueString,"user").equals("{\"name\": \"u1!\", \"age\": 9990}"));
     }
 
     @Test
-    // "key": [val1, val2, val3]
-    void getValueArrayTest(){
+        // "key": [val1, val2, val3]
+    public void getValueArrayTest(){
         assert (KeyValueString.getValue("\"rooms\": [val1, val2, val3]","rooms").equals("[val1, val2, val3]"));
         assert (KeyValueString.getValue("\"rooms\": [val1, val2, val3], \"allBusy\": false","rooms").equals("[val1, val2, val3]"));
     }
 
     @Test
-    // "key" : notString
-    void getValueInvalidString(){
+        // "key" : notString
+    public void getValueInvalidString(){
         String s = "\"key\" : notString";
         assertThrows(IllegalArgumentException.class, ()->KeyValueString.getValue(s,"key"));
     }
 
     @Test
-    void getValueTest(){
+    public void getValueTest(){
         String json = """
                 {
                   "person": {
