@@ -1,24 +1,39 @@
-# Use a base image with JDK for building
-FROM openjdk:15 AS build
+# Use the official OpenJDK 17 image as the base image
+FROM openjdk:17-alpine
 
-# Set the working directory
+# Set the working directory in the container
 WORKDIR /app
 
-# Copy the already compiled .class files into the container
-COPY ./out /app/out
+# Copy the JAR files needed for compilation and testing into the container
+COPY ./junit-jupiter-api-5.11.0-M2.jar ./apiguardian-api-1.1.2.jar ./junit-platform-console-standalone-1.8.2.jar /app/
 
-# Create a JAR file containing all .class files
-RUN jar cvf app.jar -C /app/out .
+# Copy the source code into the container
+COPY ./util /app/util
+COPY ./communication /app/communication
+COPY ./test /app/test
 
-# Second stage: Run the application
-FROM openjdk:15-slim
+# Create the output directory
+RUN mkdir -p out
 
-# Set the working directory
-WORKDIR /app
+# Compile the util classes
+RUN javac -d out util/*.java
 
-# Copy the JAR file from the build stage
-COPY --from=build /app/app.jar /app/app.jar
+# Compile the communication classes
+RUN javac -d out -classpath out:./junit-jupiter-api-5.11.0-M2.jar:./apiguardian-api-1.1.2.jar communication/*.java
 
+# Compile the test classes
+RUN javac -d out -classpath out:./junit-jupiter-api-5.11.0-M2.jar:./apiguardian-api-1.1.2.jar test/CommunicationTestUtil.java
+RUN javac -d out -classpath out:./junit-jupiter-api-5.11.0-M2.jar:./apiguardian-api-1.1.2.jar test/apiTest/ApiTest.java
 
-# Command to run each class from the JAR and print output
-CMD ["java", "-cp", "/app/out/ignitionClientAXAM/test/apiTest/ApiTest", "test.apiTest.ApiTest"]
+# Create a manifest file for the JAR
+RUN echo "Main-Class: org.junit.platform.console.ConsoleLauncher" > out/manifest.txt
+
+# Package the compiled files into a JAR file
+RUN jar cfm clientProj.jar out/manifest.txt -C out .
+
+# Clean up the manifest file
+RUN rm out/manifest.txt
+
+# Command to run the JUnit tests using the built JAR file
+CMD ["java", "-cp", "clientProj.jar:./junit-jupiter-api-5.11.0-M2.jar:./apiguardian-api-1.1.2.jar:./junit-platform-console-standalone-1.8.2.jar", "test/apiTest/ApiTest"]
+

@@ -27,7 +27,8 @@ takeJar() {
 
     # Compile test classes last, including JUnit in the classpath
     echo "---------------------> compiling test classes <------------------- "
-    javac -d out -classpath out:"$JUNIT_API_JAR":"$APIGUARDIAN_API_JAR" $(find test -name "*.java")
+    javac -d out -classpath out:"$JUNIT_API_JAR":"$APIGUARDIAN_API_JAR" test/CommunicationTestUtil.java
+    javac -d out -classpath out:"$JUNIT_API_JAR":"$APIGUARDIAN_API_JAR" test/apiTest/ApiTest.java
 
     # Check compilation status
     if [ $? -eq 0 ]; then
@@ -56,6 +57,7 @@ runTests() {
 # Check command-line arguments
 if [ $# -eq 0 ]; then
     # No arguments provided, perform only the build and run tests
+    remove    
     takeJar
     runTests
 elif [ "$1" == "remove" ]; then
