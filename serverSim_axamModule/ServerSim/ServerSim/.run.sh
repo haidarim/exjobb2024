@@ -19,13 +19,12 @@ build_and_grep() {
 }
 
 start(){
-    dotnet run ./bin/Debug/net8.0/ServerSim.dll
-    
+    dotnet ./ServerSim.dll
 }
 
 remove(){
-    sudo rm -r bin
-    sudo rm -r obj
+    rm -r bin
+    rm -r obj
     rm -r dump.rdb
 }
 
@@ -34,6 +33,7 @@ if [ $# -eq 0 ]; then
     # No arguments provided, perform only the build
     only_build
 elif [ "$1" == "start" ]; then
+    remove
     start
 elif [ "$1" == "build_and_grep" ]; then
     if [ -z "$2" ]; then
@@ -45,6 +45,7 @@ elif [ "$1" == "build_and_grep" ]; then
 elif [ "$1" == "remove" ]; then
     remove
 else
-    echo "Usage: $0 {build|build_and_grep <pattern>}"
+    echo "Usage: $0 {start|build_and_grep <pattern>|remove}"
     exit 1
 fi
+
