@@ -153,8 +153,10 @@ namespace ServerSim.utils
                     {
                         this._running = true;
                     }
+                    
+                    IPEndPoint server_ip = (IPEndPoint)_server.LocalEndpoint;
 
-                    Console.WriteLine($"TCP-Server runing on port {this._port}: waiting for connection!");
+                    Console.WriteLine($"TCP-Server:[{server_ip.Address}] runing on port {this._port}: waiting for connection!");
                     CentralLogger.LogInfo($"server started, server-thread: [{Thread.CurrentThread.ManagedThreadId}], on port: {this._port}", _log);
                     while (IsRunning())
                     {
