@@ -119,13 +119,6 @@ public class TcpClient {
     public synchronized void tearDown() {
         synchronized (lock) {
             lock.notifyAll(); // Notify waiting thread to wake up
-            if(!this.running){
-                synchronized (lock) {
-                    running = true;
-                    lock.notifyAll(); // notify for and wake up the thread in start()
-                }
-            }
-
             if(this.axSocket != null){
                 try{
                     this.axSocket.close(); // close the resource to force worker-thread interrupt
@@ -177,7 +170,7 @@ public class TcpClient {
                 // Decompress the response and return it
                 return Zipper.decompress(compressedResponse);
             } catch (IOException e) {
-                throw new RuntimeException("Failed when sending request\n" + e.getMessage(), e);
+                throw new RuntimeException("Failed when sending request\n" + e.getMessage() + " The error is:"+  e + "\nthe running state is: " + isRunning());
             }
         }
     }
