@@ -12,8 +12,8 @@ namespace ServerSim.utils
 
     public class DBConn
     {
-        // private static readonly IDatabase db = ConnectionMultiplexer.Connect("172.17.0.1:6379").GetDatabase();
-        private static readonly IDatabase db = ConnectionMultiplexer.Connect("localhost").GetDatabase();
+        private static readonly IDatabase db = ConnectionMultiplexer.Connect("172.17.0.1:6379").GetDatabase();
+        // private static readonly IDatabase db = ConnectionMultiplexer.Connect("localhost").GetDatabase();
 	private static readonly object _lockObject = new object();
 
 

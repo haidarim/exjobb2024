@@ -21,7 +21,7 @@ namespace ServerSim
         {
             RunTests();
 
-            TcpServer tcpCommunicator = new TcpServer("127.0.0.1", 2024);
+            TcpServer tcpCommunicator = new TcpServer("172.18.0.3", 2024);
             Thread pipeCommunicator = new Thread(() => { PipeServer.Run(); });
 
             tcpCommunicator.Start();
