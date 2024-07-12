@@ -29,7 +29,7 @@ public class CommunicationTestUtil {
     GET_SUCCESSFUL_STATUS_CODE = "\"status-code\": \"200 ok\"";
 
 
-    public static final String  HOST = "172.18.0.3";
+    public static final String  HOST = "127.0.0.1";
     public static final int PORT = 2024;
 
 
