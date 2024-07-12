@@ -95,8 +95,8 @@ ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inducti
 ```
 
 ## TcpServer: 
-Classes and tests for the server side is in `serverSim_axamModule/ServerSim/ServerSim`. The TcpServer.cs class placed in the `serverSim_axamModule/ServerSim/ServerSim/communication/` directory. 
-This class can be impoved to use `Monitor.Wait` and `Monitor.PulseAll` just like the client.
+Classes and tests for the server side are in `serverSim_axamModule/ServerSim/ServerSim`. The TcpServer.cs class placed in the `serverSim_axamModule/ServerSim/ServerSim/communication/` directory. 
+This class can be impoved to use `Monitor.Wait` and `Monitor.PulseAll` just like the client side.
 
 
 ## Other READMEs
