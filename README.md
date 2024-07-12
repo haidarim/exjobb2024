@@ -1,3 +1,6 @@
+# Note: for more information read the report please!
+
+
 # Used classes in ignition-scripting module:
 
 **<h3>Added packages:</h3>**
@@ -71,7 +74,7 @@ public abstract class AbstractScriptModule {
 ```
 
 
-# project directory to changed/created packages in ignition scripting module:
+# project directory, changed/created packages in ignition scripting module:
 
 ```sh
 
@@ -80,7 +83,7 @@ ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inducti
 ├── AXAMScriptModule.java # Implementation of the ./AbstractScriptModule.java
 ├── AbstractScriptModule.java # BeansInfo 
 ├── MathBlackBox.java
-├── communication
+├── communication 
 │   ├── TcpClient.java
 │   └── WPC.java
 └── util
@@ -90,6 +93,11 @@ ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inducti
 
 3 directories, 8 files
 ```
+
+# TcpServer: 
+Classes and tests for the server side is in `serverSim_axamModule/ServerSim/ServerSim`. The TcpServer.cs class placed in the `serverSim_axamModule/ServerSim/ServerSim/communication/` directory. 
+This class can be impoved to use `Monitor.Wait` and `Monitor.PulseAll` just like the client.
+
 
 # Other READMEs
 - [Ignition-Module](./ignitionModule/ignitionClientAxam/axClient/src/README.md)
