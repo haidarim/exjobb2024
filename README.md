@@ -1,7 +1,7 @@
 # Note: for more information read the report please!
 
 
-# Used classes in ignition-scripting module:
+## Used classes in ignition-scripting module:
 
 **<h3>Added packages:</h3>**
 - communication
@@ -74,7 +74,7 @@ public abstract class AbstractScriptModule {
 ```
 
 
-# project directory, changed/created packages in ignition scripting module:
+## project directory, changed/created packages in ignition scripting module:
 
 ```sh
 
@@ -94,16 +94,16 @@ ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inducti
 3 directories, 8 files
 ```
 
-# TcpServer: 
+## TcpServer: 
 Classes and tests for the server side is in `serverSim_axamModule/ServerSim/ServerSim`. The TcpServer.cs class placed in the `serverSim_axamModule/ServerSim/ServerSim/communication/` directory. 
 This class can be impoved to use `Monitor.Wait` and `Monitor.PulseAll` just like the client.
 
 
-# Other READMEs
+## Other READMEs
 - [Ignition-Module](./ignitionModule/ignitionClientAxam/axClient/src/README.md)
 - [AXAM-Module](./serverSim_axamModule/ServerSim/ServerSim/README.md)
 
-# Classes' Links:
+## Classes' Links:
 - [TcpServer.cs](./serverSim_axamModule/ServerSim/ServerSim/communication/TcpServer.cs)
 - [TcpClient.java](./ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inductiveautomation/ignition/examples/scripting/common/communication/TcpClient.java)
 
@@ -113,5 +113,5 @@ see also:
 - [Zipper.cs](serverSim_axamModule/ServerSim/ServerSim/utils/Zipper.cs)
 - [KeyValueString.java](./ignitionModule/ignitionClientAxam/axClient/src/util/KeyValueString.java)
 
-# Using in Designer:
+## Using in Designer:
 In the current file directory there is a script file that show how the module can be used later in Ignition Desigenr using Scripting. 
