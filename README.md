@@ -96,7 +96,7 @@ ignition-sdk-training-main/scripting-function-g/common/src/main/java/com/inducti
 
 ## TcpServer: 
 Classes and tests for the server side are in `serverSim_axamModule/ServerSim/ServerSim`. The TcpServer.cs class placed in the `serverSim_axamModule/ServerSim/ServerSim/communication/` directory. 
-This class can be impoved to use `Monitor.Wait` and `Monitor.PulseAll` just like the client side.
+This class can be impoved by using `Monitor.Wait` and `Monitor.PulseAll` just like the client side.
 
 
 ## Other READMEs
@@ -113,5 +113,5 @@ see also:
 - [Zipper.cs](serverSim_axamModule/ServerSim/ServerSim/utils/Zipper.cs)
 - [KeyValueString.java](./ignitionModule/ignitionClientAxam/axClient/src/util/KeyValueString.java)
 
-## Using in Designer:
-In the current file directory there is a script file that show how the module can be used later in Ignition Desigenr using Scripting. 
+## Using client module in Ignition Designer:
+In the current file directory there is a script file that shows how the client module can be used in Ignition Desigenr using Scripting functionality. 
