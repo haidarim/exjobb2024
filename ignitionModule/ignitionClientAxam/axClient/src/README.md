@@ -129,7 +129,7 @@ This class is the implementation of client side of the pipe server.
 
 
 # Tests
-Alla test suites are placed under `./test/`
+All test suites are placed under `./test/`
 
 
 # util
